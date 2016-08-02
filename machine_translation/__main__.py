@@ -21,11 +21,14 @@ import configurations
 from machine_translation import main
 from machine_translation.stream import get_tr_stream, get_dev_stream
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s: %(name)s: %(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 # Get the arguments
 parser = argparse.ArgumentParser()
-parser.add_argument("--proto",  default="get_config_cs2en",
+parser.add_argument("--proto",  default="get_config_de2en_os",
                     help="Prototype config to use for config")
 parser.add_argument("--bokeh",  default=False, action="store_true",
                     help="Use bokeh server for plotting")
