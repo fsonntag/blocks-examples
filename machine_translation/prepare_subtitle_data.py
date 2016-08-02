@@ -173,6 +173,26 @@ def split_parallel(merged_filename, src_filename, trg_filename):
                     left.write(line[0].strip() + '\n')
                     right.write(line[1].strip() + '\n')
 
+def split_file(filename, percentage):
+    number_lines = file_len(filename)
+    number_train_lines = number_lines * percentage
+    with open(filename, 'r') as complete_file:
+        all_lines = complete_file.readlines()
+        train_lines = [all_lines[i] for i in xrange(number_train_lines)]
+        test_lines = [all_lines[i] for i in xrange(number_train_lines, number_lines)]
+        with open(filename + '.train', 'w') as train_file:
+            train_file.writelines(train_lines)
+        with open(filename + '.text', 'w') as test_file:
+            test_file.writelines(test_lines)
+
+
+def file_len(filename):
+    p = subprocess.Popen(['wc', '-l', filename], stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE)
+    result, err = p.communicate()
+    if p.returncode != 0:
+        raise IOError(err)
+    return int(result.strip().split()[0])
 
 def shuffle_parallel(src_filename, trg_filename):
     logger.info("Shuffling jointly [{}] and [{}]".format(src_filename,
@@ -199,6 +219,8 @@ def shuffle_parallel(src_filename, trg_filename):
     if os.path.exists(shuffled_filename):
         os.remove(shuffled_filename)
 
+    return out_src, out_trg
+
 
 def main():
     # train_data_file = os.path.join(OUTPUT_DIR, 'tmp', 'train_data_os.tgz')
@@ -218,11 +240,6 @@ def main():
     #     ["{}-{}".format(args.source, args.target)])
     tr_files = ['./data/tmp/OpenSubtitles2016.de-en.de', './data/tmp/OpenSubtitles2016.de-en.en']
 
-    # Download development set and extract it
-    download_and_write_file(VALID_DATA_URL, valid_data_file)
-    val_files = extract_tar_file_to(
-        valid_data_file, os.path.dirname(valid_data_file),
-        [args.source_dev, args.target_dev])
 
     # Download bleu score calculation script
     download_and_write_file(BLEU_SCRIPT_URL, bleuscore_file)
@@ -238,14 +255,18 @@ def main():
                             target_prefix_file)
 
     # Apply tokenizer
-    tokenize_text_files(tr_files + val_files, tokenizer_file)
+    tokenize_text_files(tr_files, tokenizer_file)
 
     # Apply preprocessing and construct vocabularies
     src_filename, trg_filename = create_vocabularies(tr_files, preprocess_file)
 
     # Shuffle datasets
-    shuffle_parallel(os.path.join(OUTPUT_DIR, src_filename),
+    shuffled_source_path, shuffled_target_path = shuffle_parallel(os.path.join(OUTPUT_DIR, src_filename),
                      os.path.join(OUTPUT_DIR, trg_filename))
+
+
+    split_file(shuffled_source_path, 0.9)
+    split_file(shuffled_target_path, 0.9)
 
 
 if __name__ == "__main__":
