@@ -181,8 +181,8 @@ def get_config_de2en_os():
     config['trg_vocab'] = datadir + 'vocab.de-en.en.os.pkl'
 
     # Source and target datasets
-    config['src_data'] = datadir + 'OpenSubtitles2016.de-en.de.tok.shuf'
-    config['trg_data'] = datadir + 'OpenSubtitles2016.de-en.en.tok.shuf'
+    config['src_data'] = datadir + 'OpenSubtitles2016.de-en.de.tok.shuf.train'
+    config['trg_data'] = datadir + 'OpenSubtitles2016.de-en.en.tok.shuf.train'
 
     # Source and target vocabulary sizes, should include bos, eos, unk tokens
     config['src_vocab_size'] = 30000
@@ -203,10 +203,10 @@ def get_config_de2en_os():
     config['bleu_script'] = datadir + 'multi-bleu.perl'
 
     # Validation set source file
-    config['val_set'] = datadir + 'newstest2013.de.tok'
+    config['val_set'] = datadir + 'OpenSubtitles2016.de-en.de.tok.shuf.test'
 
     # Validation set gold file
-    config['val_set_grndtruth'] = datadir + 'newstest2013.en.tok'
+    config['val_set_grndtruth'] = datadir + 'OpenSubtitles2016.de-en.en.tok.shuf.test'
 
     # Print validation output to file
     config['output_val_set'] = True
