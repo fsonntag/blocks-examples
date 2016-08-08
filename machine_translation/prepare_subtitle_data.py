@@ -175,14 +175,14 @@ def split_parallel(merged_filename, src_filename, trg_filename):
 
 def split_file(filename, percentage):
     number_lines = file_len(filename)
-    number_train_lines = number_lines * percentage
+    number_train_lines = int(number_lines * percentage)
     with open(filename, 'r') as complete_file:
         all_lines = complete_file.readlines()
         train_lines = [all_lines[i] for i in xrange(number_train_lines)]
         test_lines = [all_lines[i] for i in xrange(number_train_lines, number_lines)]
         with open(filename + '.train', 'w') as train_file:
             train_file.writelines(train_lines)
-        with open(filename + '.text', 'w') as test_file:
+        with open(filename + '.test', 'w') as test_file:
             test_file.writelines(test_lines)
 
 
