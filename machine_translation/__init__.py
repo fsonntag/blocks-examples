@@ -28,7 +28,7 @@ except ImportError:
 logger = logging.getLogger(__name__)
 
 
-def main(config, tr_stream, dev_stream, use_bokeh=False):
+def main(config, tr_stream, dev_stream, use_bokeh=True):
 
     # Create Theano variables
     logger.info('Creating theano variables')
@@ -150,6 +150,7 @@ def main(config, tr_stream, dev_stream, use_bokeh=False):
 
     # Plot cost in bokeh if necessary
     if use_bokeh and BOKEH_AVAILABLE:
+        logger.info("Adding bokeh plot extension")
         extensions.append(
             Plot('De-En', channels=[['decoder_cost_cost']],
                  after_batch=True))
