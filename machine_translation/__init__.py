@@ -151,7 +151,7 @@ def main(config, tr_stream, dev_stream, use_bokeh=False):
     # Plot cost in bokeh if necessary
     if use_bokeh and BOKEH_AVAILABLE:
         extensions.append(
-            Plot('Cs-En', channels=[['decoder_cost_cost']],
+            Plot('De-En', channels=[['decoder_cost_cost']],
                  after_batch=True))
 
     # Set up training algorithm

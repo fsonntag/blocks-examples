@@ -223,8 +223,8 @@ def get_config_de2en_os():
     config['finish_after'] = 1000000
 
     # Reload model from files if exist
-    # config['reload'] = True
-    config['reload'] = False
+    config['reload'] = True
+    # config['reload'] = False
 
     # Save model after this many updates
     config['save_freq'] = 500
