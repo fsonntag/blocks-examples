@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 parser = argparse.ArgumentParser()
 parser.add_argument("--proto",  default="get_config_de2en_os",
                     help="Prototype config to use for config")
-parser.add_argument("--bokeh",  default=False, action="store_true",
+parser.add_argument("--bokeh",  default=True, action="store_true",
                     help="Use bokeh server for plotting")
 args = parser.parse_args()
 
